@@ -4,11 +4,34 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Life Tracker</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
 	<link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 	<div class="container">
+		<!-- View switcher -->
+		<div class="view-controls">
+			<div class="view-buttons">
+				<button class="view-btn active" data-view="daily">День</button>
+				<button class="view-btn" data-view="weekly">Неделя</button>
+				<button class="view-btn" data-view="monthly">Месяц</button>
+			</div>
+			<div class="data-controls">
+				<button id="exportData" class="btn-secondary">Экспорт</button>
+				<button id="importData" class="btn-secondary">Импорт</button>
+				<input type="file" id="importFile" accept=".json" style="display: none;">
+			</div>
+		</div>
+
+		<!-- Stats section -->
+		<div class="stats-panel">
+			<div class="stats-container">
+				<!-- Stats will be inserted here -->
+			</div>
+			<button id="toggleStats" class="btn-secondary">Статистика</button>
+		</div>
+
 		<div class="table-container">
 			<table id="lifeTable">
 				<thead>
@@ -21,6 +44,7 @@
 						<th>Отношения</th>
 						<th>Счастье</th>
 						<th>Блог</th>
+						<th>Действия</th>
 					</tr>
 				</thead>
 				<tbody id="tableBody">
@@ -29,14 +53,40 @@
 			</table>
 		</div>
 		<div class="controls">
-			<button id="addRow">Добавить день</button>
+			<button id="addRow">+ Добавить день</button>
 			<div class="color-picker">
-				<button class="color-btn" data-color="green">Зеленый</button>
-				<button class="color-btn" data-color="red">Красный</button>
-				<button class="color-btn" data-color="white">Белый</button>
+				<button class="color-btn" data-color="green">Успех</button>
+				<button class="color-btn" data-color="red">Неудача</button>
+				<button class="color-btn" data-color="white">Нейтрально</button>
 			</div>
 		</div>
 	</div>
+
+	<!-- Modal -->
+	<div id="modal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<h2 id="modal-title">Редактировать запись</h2>
+			<textarea id="modal-input" rows="4"></textarea>
+			<div class="modal-buttons">
+				<button id="modal-cancel" class="btn-secondary">Отмена</button>
+				<button id="modal-save" class="btn-primary">Сохранить</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Confirmation Modal -->
+	<div id="confirm-modal" class="modal">
+		<div class="modal-content">
+			<h2>Подтверждение</h2>
+			<p id="confirm-message"></p>
+			<div class="modal-buttons">
+				<button id="confirm-cancel" class="btn-secondary">Отмена</button>
+				<button id="confirm-ok" class="btn-primary">Подтвердить</button>
+			</div>
+		</div>
+	</div>
+
 	<script src="script.js"></script>
 </body>
 
