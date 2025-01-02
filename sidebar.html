@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Life Tracker</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+	<div class="container">
+		<div class="table-container">
+			<table id="lifeTable">
+				<thead>
+					<tr>
+						<th>Дата</th>
+						<th>День</th>
+						<th>Работа</th>
+						<th>Здоровье</th>
+						<th>Финансы</th>
+						<th>Отношения</th>
+						<th>Счастье</th>
+						<th>Блог</th>
+					</tr>
+				</thead>
+				<tbody id="tableBody">
+					<!-- Rows will be added here dynamically -->
+				</tbody>
+			</table>
+		</div>
+		<div class="controls">
+			<button id="addRow">Добавить день</button>
+			<div class="color-picker">
+				<button class="color-btn" data-color="green">Зеленый</button>
+				<button class="color-btn" data-color="red">Красный</button>
+				<button class="color-btn" data-color="white">Белый</button>
+			</div>
+		</div>
+	</div>
+	<script src="script.js"></script>
+</body>
+
+</html>
