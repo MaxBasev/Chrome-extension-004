@@ -48,3 +48,15 @@ life-tracker-extension/
 ├── icon48.png
 └── icon128.png
 ```
+
+## Development
+
+The extension is built using:
+- HTML5
+- CSS3
+- JavaScript
+- Chrome Extension APIs
+
+## License
+
+MIT
