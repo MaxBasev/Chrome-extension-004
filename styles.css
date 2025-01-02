@@ -319,4 +319,58 @@ td.white {
 
 .trend-down {
     color: var(--danger-color);
+}
+
+.search-panel {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: var(--surface-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.search-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+#searchInput {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+#searchField,
+#filterColor {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--background-color);
+    cursor: pointer;
+}
+
+.search-info {
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* Подсветка результатов поиска */
+.highlight {
+    background-color: rgba(255, 213, 79, 0.3);
+    border-radius: 2px;
+}
+
+/* Анимация для отфильтрованных строк */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.filtered-row {
+    animation: fadeIn 0.3s ease-in-out;
 } 

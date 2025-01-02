@@ -24,6 +24,32 @@
 			</div>
 		</div>
 
+		<!-- Search panel -->
+		<div class="search-panel">
+			<div class="search-controls">
+				<input type="text" id="searchInput" placeholder="Поиск...">
+				<select id="searchField">
+					<option value="all">Все поля</option>
+					<option value="работа">Работа</option>
+					<option value="здоровье">Здоровье</option>
+					<option value="финансы">Финансы</option>
+					<option value="отношения">Отношения</option>
+					<option value="счастье">Счастье</option>
+					<option value="блог">Блог</option>
+				</select>
+				<select id="filterColor">
+					<option value="all">Все цвета</option>
+					<option value="green">Успех</option>
+					<option value="red">Неудача</option>
+					<option value="white">Нейтрально</option>
+				</select>
+				<button id="clearFilters" class="btn-secondary">Очистить</button>
+			</div>
+			<div class="search-info">
+				<span id="searchResults">Найдено: 0</span>
+			</div>
+		</div>
+
 		<!-- Stats section -->
 		<div class="stats-panel">
 			<div class="stats-container">

@@ -2,6 +2,10 @@
 let selectedCell = null;
 let currentModalCallback = null;
 let currentView = 'daily';
+let searchTimeout = null;
+let currentSearchTerm = '';
+let currentSearchField = 'all';
+let currentColorFilter = 'all';
 
 // Initialize data from localStorage or create empty array
 let tableData = JSON.parse(localStorage.getItem('lifeTrackerData')) || [];
@@ -92,19 +96,32 @@ function renderTable(data = tableData) {
 	const tbody = document.getElementById('tableBody');
 	tbody.innerHTML = '';
 
-	data.forEach((row, index) => {
+	const filteredData = filterData(data);
+	document.getElementById('searchResults').textContent = `Найдено: ${filteredData.length}`;
+
+	filteredData.forEach((row, index) => {
 		const tr = document.createElement('tr');
-		tr.innerHTML = `
-            <td>${row.date}</td>
-            <td>${row.day}</td>
-            <td class="${row.colors.работа}" data-index="${index}" data-field="работа">${row.работа}</td>
-            <td class="${row.colors.здоровье}" data-index="${index}" data-field="здоровье">${row.здоровье}</td>
-            <td class="${row.colors.финансы}" data-index="${index}" data-field="финансы">${row.финансы}</td>
-            <td class="${row.colors.отношения}" data-index="${index}" data-field="отношения">${row.отношения}</td>
-            <td class="${row.colors.счастье}" data-index="${index}" data-field="счастье">${row.счастье}</td>
-            <td class="${row.colors.блог}" data-index="${index}" data-field="блог">${row.блог}</td>
-            <td><button class="delete-btn" data-index="${index}">✕</button></td>
-        `;
+		tr.className = 'filtered-row';
+
+		let rowHtml = `
+			<td>${row.date}</td>
+			<td>${row.day}</td>
+		`;
+
+		['работа', 'здоровье', 'финансы', 'отношения', 'счастье', 'блог'].forEach(field => {
+			const text = currentSearchTerm ? highlightText(row[field], currentSearchTerm) : row[field];
+			rowHtml += `
+				<td class="${row.colors[field]}" data-index="${index}" data-field="${field}">
+					${text}
+				</td>
+			`;
+		});
+
+		rowHtml += `
+			<td><button class="delete-btn" data-index="${index}">✕</button></td>
+		`;
+
+		tr.innerHTML = rowHtml;
 		tbody.appendChild(tr);
 	});
 }
@@ -373,4 +390,65 @@ document.getElementById('importFile').addEventListener('change', (e) => {
 updateStats();
 
 // Initial render
-renderTable(); 
+renderTable();
+
+// Функция для фильтрации данных
+function filterData(data) {
+	return data.filter(row => {
+		// Проверка по цвету
+		if (currentColorFilter !== 'all') {
+			const hasColor = Object.values(row.colors).some(color => color === currentColorFilter);
+			if (!hasColor) return false;
+		}
+
+		// Проверка по тексту
+		if (currentSearchTerm) {
+			if (currentSearchField === 'all') {
+				const values = Object.entries(row)
+					.filter(([key]) => !['date', 'day', 'colors'].includes(key))
+					.map(([, value]) => value.toLowerCase());
+				return values.some(value => value.includes(currentSearchTerm.toLowerCase()));
+			} else {
+				return row[currentSearchField].toLowerCase().includes(currentSearchTerm.toLowerCase());
+			}
+		}
+
+		return true;
+	});
+}
+
+// Функция для подсветки найденного текста
+function highlightText(text, searchTerm) {
+	if (!searchTerm) return text;
+	const regex = new RegExp(`(${searchTerm})`, 'gi');
+	return text.replace(regex, '<span class="highlight">$1</span>');
+}
+
+// Добавляем обработчики событий для поиска и фильтрации
+document.getElementById('searchInput').addEventListener('input', (e) => {
+	clearTimeout(searchTimeout);
+	searchTimeout = setTimeout(() => {
+		currentSearchTerm = e.target.value;
+		renderTable(aggregateData(currentView));
+	}, 300);
+});
+
+document.getElementById('searchField').addEventListener('change', (e) => {
+	currentSearchField = e.target.value;
+	renderTable(aggregateData(currentView));
+});
+
+document.getElementById('filterColor').addEventListener('change', (e) => {
+	currentColorFilter = e.target.value;
+	renderTable(aggregateData(currentView));
+});
+
+document.getElementById('clearFilters').addEventListener('click', () => {
+	document.getElementById('searchInput').value = '';
+	document.getElementById('searchField').value = 'all';
+	document.getElementById('filterColor').value = 'all';
+	currentSearchTerm = '';
+	currentSearchField = 'all';
+	currentColorFilter = 'all';
+	renderTable(aggregateData(currentView));
+}); 
